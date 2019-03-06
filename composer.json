@@ -1,0 +1,23 @@
+{
+  "name": "maplesnow/quiver2hexo",
+  "description": "converts quiver notes written by markdown to Hexo blog posts",
+  "keywords": ["quiver", "hexo"],
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "MapleSnow",
+      "email": "summerweiace@163.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "php": ">=5.6.0",
+    "vlucas/phpdotenv": "^3.3@dev"
+  },
+  "autoload": {
+    "psr-4": {
+        "Quiver2Hexo\\": "src/"
+    }
+  }
+}
