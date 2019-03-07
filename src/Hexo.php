@@ -14,20 +14,25 @@ use Exception;
 
 class Hexo {
 
+    /**
+     * 本地服务
+     */
     static public function server(){
         try{
-            $service = new HexoService();
-            return $service->server();
+            LogService::info("hexo is starting up, waiting 5 seconds then checkout: ".HEXO_LOCAL_SERVER);
+            (new HexoService)->server();
         }catch (Exception $e){
-            LogService::error('Deploy failed:'.$e->getMessage());
+            LogService::error('Run hexo error:'.$e->getMessage());
         }
     }
 
+    /**
+     * 发布上线
+     */
     static public function deploy(){
         try{
-            $service = new HexoService();
-            $service->deploy();
-            LogService::info("deploy success, checkout: ".getenv("BLOG_URI"));
+            (new HexoService)->deploy();
+            LogService::info("deploy success, checkout: ".env("BLOG_URI"));
         }catch (Exception $e){
             LogService::error('Deploy failed:'.$e->getMessage());
         }

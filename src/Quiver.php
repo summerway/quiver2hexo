@@ -8,7 +8,6 @@
 
 namespace Quiver2Hexo;
 
-use Quiver2Hexo\Service\BashService;
 use Quiver2Hexo\Service\HexoService;
 use Quiver2Hexo\Service\LogService;
 use Quiver2Hexo\Service\QuiverService;
@@ -20,28 +19,18 @@ use Exception;
  */
 class Quiver{
 
-    protected $quiService;
-
-    protected $hexService;
-
-    public function __construct() {
-        $this->quiService = new QuiverService();
-        $this->hexService = new HexoService();
-    }
-
     /**
-     * init hexo posts directory
+     * 初始化迁移
      * @return bool
-     * @throws Exception
      */
-    public function migrate() {
+    static public function migrate() {
         try{
-            $this->hexService->initPost();
-            $this->quiService->migrate($this->hexService->getPostPath());
+            (new HexoService)->initPost();
+            (new QuiverService)->migrate();
             LogService::output();
         }catch (Exception $e){
             LogService::error('Migrate failed: '.$e->getMessage());
-            $this->rollback();
+            HexoService::$init && static::rollback();
         }
         return true;
     }
@@ -49,16 +38,15 @@ class Quiver{
     /**
      * 后期修改同步
      * @return bool
-     * @throws Exception
      */
-    public function sync() {
+    static public function sync() {
         try{
-            $this->hexService->initPost();
-            $this->quiService->sync($this->hexService->getPostPath());
+            (new HexoService)->initPost();
+            (new QuiverService)->sync();
             LogService::output();
         }catch (Exception $e){
             LogService::error('Sync failed: '.$e->getMessage());
-            $this->rollback();
+            HexoService::$init && static::rollback();
         }
         return true;
     }
@@ -66,10 +54,15 @@ class Quiver{
     /**
      * 回滚
      * @return bool
-     * @throws Exception
      */
-    public function rollback(){
-        return BashService::rollback($this->hexService->getPostPath());
+    static public function rollback(){
+        try{
+            (new HexoService)->rollback();
+            return true;
+        }catch (Exception $e){
+            LogService::error('Rollback failed: '.$e->getMessage());
+            return false;
+        }
     }
 }
 

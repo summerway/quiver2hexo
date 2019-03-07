@@ -11,6 +11,9 @@ namespace Quiver2Hexo\Service;
 class BashService{
 
     static function pwd($path){
+        if(empty($path)){
+            return false;
+        }
         return trim(shell_exec("cd {$path} && pwd"));
     }
 
@@ -25,38 +28,27 @@ class BashService{
         return shell_exec("cp -R {$origin} {$destination}");
     }
 
-    static function backUp($origin){
-        return self::cp($origin,"{$origin}.bak");
-    }
-
-    /**
-     * @param $origin
-     * @return bool
-     * @throws \Exception
-     */
-    static function rollback($origin){
-        $bakFile = "{$origin}.bak";
-        if(!file_exists($bakFile)){
-            throw new \Exception("Can't roll back, {$origin} doesn't have any backup file");
-        }
-
-        self::rm($origin);
-        rename($bakFile,$origin);
-        return true;
-    }
-
     static function mkdir($path){
         return shell_exec("mkdir -p $path");
     }
 
-    static function hexoDeploy(){
-        $hexoPath = getenv("HEXO_PATH");
-        return shell_exec("cd {$hexoPath} && hexo clean && hexo g -d");
+    /**
+     * @param string $path hexo base path
+     * @return string
+     */
+    static function hexoDeploy($path){
+        return shell_exec("cd {$path} && hexo g -d");
     }
 
-    static function hexoServer(){
-        $hexoPath = getenv("HEXO_PATH");
-        return shell_exec("cd {$hexoPath} && hexo s --debug");
+    /**
+     * @param string $path hexo base path
+     * @return string
+     */
+    static function hexoServer($path){
+        if($pid = self::getProcessId("hexo")){
+            self::kill($pid);
+        }
+        return shell_exec("cd {$path} && hexo s --debug");
     }
 
     static function getProcessId($process){

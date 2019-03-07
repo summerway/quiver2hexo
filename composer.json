@@ -13,11 +13,15 @@
   "minimum-stability": "dev",
   "require": {
     "php": ">=5.6.0",
-    "vlucas/phpdotenv": "^3.3@dev"
+    "vlucas/phpdotenv": "^3.3@dev",
+    "symfony/var-dumper": "3.4.x-dev"
   },
   "autoload": {
     "psr-4": {
         "Quiver2Hexo\\": "src/"
-    }
+    },
+    "files": [
+      "src/Function.php"
+    ]
   }
 }

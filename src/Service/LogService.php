@@ -16,18 +16,23 @@ class LogService {
     }
 
     static function error($message){
-        var_dump($message);
+        dump($message);
     }
 
     static function info($message){
-        var_dump($message);
+        dump($message);
     }
 
     static function output(){
-        if(getenv('SHOW_LOG')){
-            while(self::$queue){
-                var_dump(array_pop(self::$queue));
+        if(env('SHOW_LOG',true)){
+            if(self::$queue){
+                while(self::$queue){
+                    dump(array_pop(self::$queue));
+                }
+            }else{
+                dump("nothing changed~");
             }
+
         }
     }
 

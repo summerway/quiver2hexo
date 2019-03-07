@@ -8,37 +8,51 @@
 
 namespace Quiver2Hexo\Service;
 
+use Exception;
+
 class QuiverService {
 
     protected $libraryPath;
 
-    protected $categoryList;    // hexo category list
+    protected $categoryList;    // HEXO category list
 
     protected $relTag;          // sync articles with this tag
 
-    protected $migratePath;
-
     protected $init = false;
 
+    /**
+     * QuiverService constructor.
+     * @throws Exception
+     */
     public function __construct() {
-        $this->libraryPath = BashService::pwd(getenv("QUIVER_LIBRARY_PATH"));
-        $this->relTag = getenv('QUIVER_RELEASE_TAG');
+        $libraryPath = BashService::pwd(env("QUIVER_LIBRARY_PATH",""));
+        if(!$libraryPath || !file_exists($libraryPath)){
+            throw new Exception("quiver library path not found~");
+        }
+        $this->libraryPath = $libraryPath;
+        $this->relTag = env('QUIVER_RELEASE_TAG','relHexo');
     }
 
-    public function migrate($destination) {
+    /**
+     * @throws Exception
+     */
+    public function migrate() {
         $this->init = true;
-        $this->migratePath = $destination;
         $this->categoryList = $this->getCategoryList();
         $this->walkLibrary($this->libraryPath);
     }
 
-    public function sync($destination) {
+    /**
+     * @return bool
+     * @throws Exception
+     */
+    public function sync() {
         $this->init = false;
-        $this->migratePath = $destination;
         $this->categoryList = $this->getCategoryList();
         $this->walkLibrary($this->libraryPath);
 
-        $diff = FileService::diffDir("{$destination}.bak",$destination);
+        // log
+        $diff = FileService::diffDir(HexoService::getPostBakPath(),HexoService::getPostPath());
         foreach($diff as $file){
             LogService::insert("remove {$file}");
         }
@@ -66,6 +80,11 @@ class QuiverService {
         }
     }
 
+    /**
+     * @param $path
+     * @param string $parentId
+     * @throws Exception
+     */
     private function walkLibrary($path,$parentId = ""){
         foreach(scandir($path) as $file){
             if(in_array($file,['.','..','Inbox.qvnotebook','Trash.qvnotebook']))
@@ -83,20 +102,33 @@ class QuiverService {
         }
     }
 
+    /**
+     * @param $path
+     * @param $file
+     * @param $parentId
+     * @return bool
+     * @throws Exception
+     */
     private function doMigrate($path,$file,$parentId){
-
         $markdown = $this->convertMarkdown($path,$file,$parentId);
         if(!$markdown){
             return false;
         }
         list($filename,$content,,$categories) = $markdown;
-        $name = FileService::checkUnique("{$this->migratePath}/{$filename}");
+        $name = FileService::checkUnique(HexoService::getPostPath($filename));
         $res =  FileService::createFile($name,$content);
         $message = "migrate ".implode("|",$categories)."|".$filename;
         LogService::insert($message);
         return $res;
     }
 
+    /**
+     * @param $path
+     * @param $file
+     * @param $parentId
+     * @return bool
+     * @throws Exception
+     */
     private function doSync($path,$file,$parentId){
         $markdown = $this->convertMarkdown($path,$file,$parentId);
         if(!$markdown){
@@ -104,11 +136,11 @@ class QuiverService {
         }
 
         list($filename,$content,$updatedAt,$categories) = $markdown;
-        $bakFile = "{$this->migratePath}.bak/{$filename}";
-        $name = "{$this->migratePath}/{$filename}";
+        $bakFile = HexoService::getPostBakPath($filename);
+        $name = HexoService::getPostPath($filename);
         if(file_exists($bakFile)){
-            $originUpdatedAt = filemtime($bakFile);
-            if($updatedAt > $originUpdatedAt){
+            $lastUpdatedAt = filemtime($bakFile);
+            if($updatedAt > $lastUpdatedAt){
                 FileService::createFile($name,$content);
                 $message = "modify ".implode("|",$categories)."|".$filename;
                 LogService::insert($message);

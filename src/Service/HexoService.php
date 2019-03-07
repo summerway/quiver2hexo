@@ -8,40 +8,122 @@
 
 namespace Quiver2Hexo\Service;
 
+use Exception;
+
 class HexoService {
 
-    protected $basePath;
+    static $hexoPath;  // hexo folder path
 
-    public function __construct() {
-        $this->basePath = BashService::pwd(getenv('HEXO_PATH'));
+    static $init = false;  // whether to complete initialization
+
+    /**
+     * @param $path
+     * @return bool|string
+     * @throws Exception
+     */
+    static function getBasePath($path = ''){
+        if(!self::$hexoPath){
+            $hexoPath = BashService::pwd(env('HEXO_PATH',""));
+            if(!$hexoPath || !file_exists($hexoPath)){
+                throw new Exception("hexp path not found~");
+            }
+
+            self::$hexoPath = $hexoPath;
+        }
+
+        return self::$hexoPath.($path ? DIRECTORY_SEPARATOR.ltrim($path, DIRECTORY_SEPARATOR) : $path);
     }
 
+    /**
+     * @param $path
+     * @return string
+     * @throws Exception
+     */
+    static public function getPostPath($path = ''){
+        return self::getBasePath("source/_posts") . ($path ?
+                DIRECTORY_SEPARATOR.ltrim($path, DIRECTORY_SEPARATOR) : $path);
+    }
+
+    /**
+     * @param $path
+     * @return string
+     * @throws Exception
+     */
+    static public function getPostBakPath($path = ''){
+        return self::getBasePath("source/._posts.bak"). ($path ?
+                DIRECTORY_SEPARATOR.ltrim($path, DIRECTORY_SEPARATOR) : $path);
+    }
+
+    /**
+     * @return bool
+     * @throws Exception
+     */
     public function initPost(){
         $postPath = $this->getPostPath();
         !file_exists($postPath) && BashService::mkdir($postPath);
-        BashService::rm("{$postPath}.bak");
-        rename($postPath,"{$postPath}.bak");
+        $this->backupPost();
+        self::$init = true;
+        return true;
+    }
+
+    /**
+     * @return bool
+     * @throws Exception
+     */
+    public function rollback() {
+        $bakPath = $this->getPostBakPath();
+        if(!file_exists($bakPath)){
+            throw new \Exception("backup file not found");
+        }
+
+        $this::removePostBak($bakPath);
+        rename($bakPath,$this->getPostPath());
+        return true;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function deploy() {
+        BashService::hexoDeploy($this->getBasePath());
+    }
+
+    /**
+     * @return string
+     * @throws Exception
+     */
+    public function server(){
+        return BashService::hexoServer($this->getBasePath());
+    }
+
+    /**
+     * @return bool
+     * @throws Exception
+     */
+    private function backupPost(){
+        $postPath = $this->getPostPath();
+        $postBakPath = $this->getPostBakPath();
+
+        $this->removePostBak($postBakPath);
+        rename($postPath,$postBakPath);
         BashService::mkdir($postPath);
         return true;
     }
 
-    public function backupPost(){
-        $postPath = $this->getPostPath();
-        !file_exists($postPath) && BashService::mkdir($postPath);
-        BashService::rm("{$postPath}.bak");
-        BashService::backUp($postPath);
-        return true;
-    }
+    /**
+     * @param $path
+     * @return bool|string
+     * @throws Exception
+     */
+    private function removePostBak($path){
+        if($path != $this->getPostBakPath()){
+            return false;
+        }
 
-    public function getPostPath(){
-        return "{$this->basePath}/source/_posts";
-    }
+        if(!file_exists($path)){
+            return true;
+        }
 
-    public function deploy() {
-        BashService::hexoDeploy();
-    }
-
-    public function server(){
-        BashService::hexoServer();
+        return BashService::rm($path);
     }
 }

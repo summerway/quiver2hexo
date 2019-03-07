@@ -8,21 +8,15 @@
 
 require __DIR__.'/../vendor/autoload.php';
 
-$env = Dotenv\Dotenv::create(__DIR__);
+$env = Dotenv\Dotenv::create(__DIR__.'/../');
 $env->load();
 
 use Quiver2Hexo\Quiver;
 use Quiver2Hexo\Hexo;
 
-$quiver = new Quiver();
+//Quiver::migrate();
+//Quiver::sync();
+//Quiver::rollback();
 
-//$quiver->migrate();
-$quiver->sync();
-
-Hexo::server();
-
-//$transform->sync();
-
-//$quiver->rollback();
-
+//Hexo::server();
 //Hexo::deploy();
