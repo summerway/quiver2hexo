@@ -1,29 +1,65 @@
+# Overview
+**Quiver** notes  => `quiver2hexo` sync => **Hexo** posts => Deploy blog website  
+[demo video](http://markdown.zengtuo.net/quiver2hexo-demo.mp4)
 
-quiver中`Inbox`和`Trash`是不会被迁移的。
+## Migration
+`quiver2hexo` converts **Quiver** notes written by markdown to **Hexo** blog posts.
 
-## quiver文件准备
-- 将要发布的加上特定标签，默认是`relHexo`,也可在配置文件自行定义,该标签不会应用到hexo。
-- 将文章加上`<!-- more -->`来精确控制文章的摘要预览,比如这篇文章就是在这个段落的末尾添加了该标志，所以本文在首页的预览就会显示到这个段落为止。
+## Synchronization
+Sync there modified notes to **Hexo** blog posts after migration finished.
 
-# 配置准备
-- 
+## Log
+The terminal will output note migration information.
+
+## Simulation
+Start the **Hexo** local server after synchronization finishes, you can view sync effects locally.
+
+## Deploy
+Deploy website after synchronization finishes.
+
+## Rollback
+- rollback the last sync operation
+- rollback the last deploy operation
+
+Ps
+- **Inbox** and **Trash** will not be migrated
+- Notes resource files will not be migrated.Recommend to have resources on the cloud.
+
+# Dependency
+- [Quiver](http://happenapps.com/#quiver) The Programmer's Notebook
+- [Hexo](https://hexo.io/) A fast, simple & powerful blog framework
+- [hexo-deployer-git](https://github.com/hexojs/hexo-deployer-git)
+
+  ```bash
+  npm install hexo-deployer-git --save
+  ```
+
+#  Preparation
+- Add a specific tag to the note to be posted, the default is `relHexo`, which of course don't appear in **Hexo**.
+- Please use <!-- more --> in the note to control excerpt accurately.
+
+# Usage
+## Setup
+```bash
+# download
+git clone https://github.com/summerway/quiver2hexo.git
+
+# setup
+cd quiver2hexo && sh setup.sh
+```
+
+## Basic Usage
+| Command      | Description  |
+| :------:  | :-----:  |
+| `php sync.php`  | Sync the modified content in the QUIVER to HEXO|
+| `php sync.php -s` | Start the HEXO local server after synchronization finishes <br/> Restart the service if the server exists.|
+| `php sync.php -d` | Deploy after synchronization finishes|
+| `php sync.php -r` | Rollback the last sync operation|
+| `php sync.php -rd` | Rollback the last deploy operation|
+| `php sync.php -h` | help document|
+
 
 # todo
-- [x] 迁移功能 
-- [x] 同步功能
-- [x] 回滚功能
-- [x] 日志输出
-- [x] 本地模拟调试
-- [x] 一键发布
-- [x] 快速安装脚本
+- [ ] support `code`,`text` cell
 - [ ] alfred workflow
-- [ ] 语言包
-
-# 备注
-quiver 修改标签和分类是不会更新`updated_at`的，所以读取更新时间得获取`meta.json`的最后修改时间
-
-# 本地博客发布到Github Pages
-依赖插件[hexo-deployer-git](https://github.com/hexojs/hexo-deployer-git) 
-```bash
-npm install hexo-deployer-git --save
-```
+- [ ] multi-lang

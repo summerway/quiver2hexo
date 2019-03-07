@@ -48,7 +48,7 @@ echo ";output the migrate log\nSHOW_LOG=$show_log\n" >> .env;
 
 echo "\n\033[44;37m Config success~ \033[0m\n" ;
 
-echo "Start migrating QUIVER posts... \n" ;
+echo "Start migrating QUIVER notes... \n" ;
 
 php sync.php --migrate ;
 
