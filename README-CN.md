@@ -1,11 +1,10 @@
 # 概述
 **Quiver**笔记  => `quiver2hexo`同步 => **Hexo** posts => 网站发布  
 [演示demo](http://markdown.zengtuo.net/quiver2hexo-demo.mp4)
-## 初始化迁移
-`quiver2hexo`  将**Quiver** markdown记录的笔记迁移到 **Hexo** _posts文件夹中 
 
 ## 同步
-将那些在迁移完成后被修改的文件同步至**Hexo** 
+- 第一次同步，将**Quiver** markdown记录的笔记迁移到 **Hexo** _posts文件夹中 
+- 同步之后被修改的文件同步至**Hexo** 
 
 ## 日志
 终端中输出笔记迁移变动信息
@@ -25,16 +24,17 @@ Ps
 - 笔记的资源文件不会被同步，推荐将资源放至云端 [Markdown快速插入图片工具](https://github.com/summerway/markdown-image-alfred)
 
 # 依赖
-- [Quiver](http://happenapps.com/#quiver) mac上很棒的笔记应用
-- [Hexo](https://hexo.io/zh-cn/) 快速、简洁且高效的博客框架
-- [hexo-deployer-git](https://github.com/hexojs/hexo-deployer-git)
+- [Quiver](http://happenapps.com/#quiver):mac上很棒的笔记应用
+- [Hexo](https://hexo.io/zh-cn/):快速、简洁且高效的博客框架
+- [hexo-deployer-git](https://github.com/hexojs/hexo-deployer-git):**Hexo** 部署插件
 
   ```bash
   npm install hexo-deployer-git --save
   ```
 
-## quiver文件准备
-- 给发布笔记加上特定标签，默认是`relHexo`,当然该标签不会出现在hexo。
+## 前期准备
+- 将`hexo_path/source/_post`目录下的markdown文件导入**Quiver**中，或者做好备份，**安装脚本会清空该目录**
+- 给发布笔记加上特定标签，默认是`relHexo`,当然该标签不会出现在**Hexo**。
 - 将文章加上`<!-- more -->`来精确控制文章的摘要预览,比如这篇文章就是在这个段落的末尾添加了该标志，所以本文在首页的预览就会显示到这个段落为止。
 
 # 用法
@@ -50,7 +50,7 @@ cd quiver2hexo && sh setup.sh
 ## 基本用法
 | Command      | Description  |
 | :------:  | :-----:  |
-| `php sync.php`  | 将QUIVER中修改的内容同步至HEXO |
+| `php sync.php`  | 将QUIVER中笔记同步至HEXO |
 | `php sync.php -s` | 同步完成后启动HEXO本地服务 <br/> 若服务存在则重启服务 |
 | `php sync.php -d` | 同步完成后部署网站 |
 | `php sync.php -r` | 回滚最近一次的同步操作 |
@@ -62,7 +62,6 @@ cd quiver2hexo && sh setup.sh
 # todo
 - [ ] support `code`,`text` cell
 - [ ] alfred workflow
-- [ ] multi-lang
 
 
 # 其他

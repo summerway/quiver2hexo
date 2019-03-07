@@ -20,8 +20,7 @@ class FileService {
     }
 
     static function readJson($file,$returnArray = false){
-        $lgc = new FileLogic();
-        $lgc->checkExt($file,'json');
+        (new FileLogic)->checkExt($file,'json');
         $content = file_get_contents($file);
         return json_decode($content,$returnArray);
     }
@@ -32,8 +31,13 @@ class FileService {
      * @return string
      */
     static function checkUnique($name){
-        $lgc = new FileLogic();
-        return $lgc->getUniqueName($name);
+        return (new FileLogic)->getUniqueName($name);
+    }
+
+    static function swapFilename($obj,$sbj){
+        rename($obj,"/tmp/tmp");
+        rename($sbj,$obj);
+        rename("/tmp/tmp",$sbj);
     }
 
     /**

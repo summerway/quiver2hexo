@@ -6,7 +6,7 @@ echo Start installing the dependencies... ;
 
 ./composer.phar dumpautoload ;
 
-echo "\n\033[44;37m Welcome to the quiver2hexo config generator \033[0m" ; 
+echo "\n\033[44;37m Welcome to the quiver2hexo config generator \033[0m" ;
 
 echo "This command will guide you creating your .env file" ;
 
@@ -39,7 +39,7 @@ if [ "$quiver_release_tag" = "" ]; then
 fi
 echo ";sync articles with this tag\nQUIVER_RELEASE_TAG=\"$quiver_release_tag\"\n" >> .env;
 
-echo "output the migrate log:[\033[32mtrue\033[0m]\c" ; 
+echo "output the migrate log:[\033[32mtrue\033[0m]\c" ;
 read show_log ;
 if [ "$show_log" = "" ]; then
 	show_log=true
@@ -48,12 +48,23 @@ echo ";output the migrate log\nSHOW_LOG=$show_log\n" >> .env;
 
 echo "\n\033[44;37m Config success~ \033[0m\n" ;
 
-echo "Start migrating QUIVER notes... \n" ;
+echo "Prepare to migrate QUIVER notes, \033[31m $hexo_path/source/_post will be emptied \033[0m, whether to continue? [y/n]:\c" ;
+read response ;
+while [[ "$response" != 'y' ]] && [[ "$response" != 'n' ]]
+do
+	echo "whether to continue? type y or n:\c" ;
+	read response ;
+done
 
-php sync.php --migrate ;
+if [ "$response" = 'y' ]
+then
+   php sync.php ;
+   echo "\n\033[44;37m Migration success~~ \033[0m\n" ;
+else
+   echo "Execute \033[32mphp sync.php \033[0mif you need to sync QUIVER notes"
+fi
 
-echo "\n\033[44;37m Migration success~~ \033[0m\n" ;
-echo "exec \033[32mphp sync.php -h\033[0m checkout sync and deploy instructions  \n" ;
+echo "Execute \033[32mphp sync.php -h\033[0m checkout sync and deploy instructions  \n" ;
 
 
 

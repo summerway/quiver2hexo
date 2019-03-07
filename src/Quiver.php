@@ -20,23 +20,7 @@ use Exception;
 class Quiver{
 
     /**
-     * 初始化迁移
-     * @return bool
-     */
-    static public function migrate() {
-        try{
-            (new HexoService)->initPost();
-            (new QuiverService)->migrate();
-            LogService::output();
-        }catch (Exception $e){
-            LogService::error('Migrate failed: '.$e->getMessage());
-            HexoService::$init && static::rollback();
-        }
-        return true;
-    }
-
-    /**
-     * 后期修改同步
+     * 同步
      * @return bool
      */
     static public function sync() {
@@ -58,6 +42,7 @@ class Quiver{
     static public function rollback(){
         try{
             (new HexoService)->rollback();
+            LogService::info("Rollback success~");
             return true;
         }catch (Exception $e){
             LogService::error('Rollback failed: '.$e->getMessage());

@@ -18,8 +18,6 @@ class QuiverService {
 
     protected $relTag;          // sync articles with this tag
 
-    protected $init = false;
-
     /**
      * QuiverService constructor.
      * @throws Exception
@@ -34,20 +32,10 @@ class QuiverService {
     }
 
     /**
-     * @throws Exception
-     */
-    public function migrate() {
-        $this->init = true;
-        $this->categoryList = $this->getCategoryList();
-        $this->walkLibrary($this->libraryPath);
-    }
-
-    /**
      * @return bool
      * @throws Exception
      */
     public function sync() {
-        $this->init = false;
         $this->categoryList = $this->getCategoryList();
         $this->walkLibrary($this->libraryPath);
 
@@ -95,31 +83,10 @@ class QuiverService {
                 $this->walkLibrary($path.'/'.$file,$meta->uuid);
             }else{
                 if('content.json' == $file){
-                    $this->init ?
-                        $this->doMigrate($path,$file,$parentId) : $this->doSync($path,$file,$parentId);
+                    $this->doSync($path,$file,$parentId);
                 }
             }
         }
-    }
-
-    /**
-     * @param $path
-     * @param $file
-     * @param $parentId
-     * @return bool
-     * @throws Exception
-     */
-    private function doMigrate($path,$file,$parentId){
-        $markdown = $this->convertMarkdown($path,$file,$parentId);
-        if(!$markdown){
-            return false;
-        }
-        list($filename,$content,,$categories) = $markdown;
-        $name = FileService::checkUnique(HexoService::getPostPath($filename));
-        $res =  FileService::createFile($name,$content);
-        $message = "migrate ".implode("|",$categories)."|".$filename;
-        LogService::insert($message);
-        return $res;
     }
 
     /**

@@ -76,8 +76,8 @@ class HexoService {
             throw new \Exception("backup file not found");
         }
 
+        FileService::swapFilename($bakPath,$this->getPostPath());
         $this::removePostBak($bakPath);
-        rename($bakPath,$this->getPostPath());
         return true;
     }
 

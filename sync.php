@@ -39,14 +39,10 @@ switch ($option){
         Quiver::rollback();
         Hexo::deploy();
         break;
-    case '-m':
-    case '--migrate':
-        Quiver::migrate();
-        break;
     case '-h':
     case '--help':
         echo "Ps:中文帮助说明请使用php sync.php -hc\n";
-        echo "The script will sync the modified content in the QUIVER to HEXO. By default, the synced content will not be deployed.\n\n";
+        echo "The script will sync QUIVER notes to HEXO. By default, the synced notes will not be deployed.\n\n";
         echo "The options are as follows:\n\n";
         echo "\t-s,--server\tStart the HEXO local server after synchronization finishes, restart the service if the server exists.\n\n";
         echo "\t-d,--deploy\tDeploy after synchronization finishes\n\n";
@@ -54,7 +50,7 @@ switch ($option){
         echo "\t-rd\tRollback the last deploy operation\n";
         break;
     case '-hc':
-        echo "该脚本会将QUIVER中修改的内容同步至HEXO中，默认只同步内容不做发布。\n\n";
+        echo "该脚本会将QUIVER中的笔记同步至HEXO中，默认只同步不做发布。\n\n";
         echo "可选参数如下:\n\n";
         echo "\t-s,--server\t同步完成后启动HEXO本地服务，若服务存在则重启服务\n\n";
         echo "\t-d,--deploy\t同步完成后部署网站\n\n";

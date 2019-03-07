@@ -14,7 +14,6 @@ $env->load();
 use Quiver2Hexo\Quiver;
 use Quiver2Hexo\Hexo;
 
-//Quiver::migrate();
 //Quiver::sync();
 //Quiver::rollback();
 
