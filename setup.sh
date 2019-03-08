@@ -6,7 +6,7 @@ echo Start installing the dependencies... ;
 
 ./composer.phar dumpautoload ;
 
-echo "\n\033[44;37m Welcome to the quiver2hexo config generator \033[0m" ;
+echo "\n\033[44;37m Welcome to the quiver2hexo config generator \033[0m\n" ;
 
 echo "This command will guide you creating your .env file" ;
 
@@ -59,7 +59,6 @@ done
 if [ "$response" = 'y' ]
 then
    php sync.php ;
-   echo "\n\033[44;37m Migration success~~ \033[0m\n" ;
 else
    echo "Execute \033[32mphp sync.php \033[0mif you need to sync QUIVER notes"
 fi

@@ -47,6 +47,9 @@ git clone https://github.com/summerway/quiver2hexo.git
 cd quiver2hexo && sh setup.sh
 ```
 
+## 配置
+安装成功后，会生成`.env`环境配置文件，你可用它来手动更改配置。
+
 ## 基本用法
 | Command      | Description  |
 | :------:  | :-----:  |

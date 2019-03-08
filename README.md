@@ -48,6 +48,9 @@ git clone https://github.com/summerway/quiver2hexo.git
 cd quiver2hexo && sh setup.sh
 ```
 
+## Configuration
+Once the setup finishes, an `.env` config file is generated.You can change config manually with it.
+
 ## Basic Usage
 | Command      | Description  |
 | :------:  | :-----:  |
