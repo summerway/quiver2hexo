@@ -28,13 +28,17 @@ class Hexo {
 
     /**
      * 发布上线
+     * @return bool
      */
     static public function deploy(){
         try{
             (new HexoService)->deploy();
-            LogService::info("deploy success, checkout: ".env("BLOG_URI"));
         }catch (Exception $e){
             LogService::error('Deploy failed:'.$e->getMessage());
+            return false;
         }
+
+        LogService::info("deploy success, checkout: ".env("BLOG_URI"));
+        return true;
     }
 }

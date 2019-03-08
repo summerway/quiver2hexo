@@ -23,21 +23,18 @@ $option = end($argv);
 switch ($option){
     case '-s':
     case '--server':
-        Quiver::sync();
-        Hexo::server();
+        Quiver::sync() && Hexo::server();
         break;
     case '-d':
     case '--deploy':
-        Quiver::sync();
-        Hexo::deploy();
+        Quiver::sync() && Hexo::deploy();
         break;
     case '-r':
     case '--rollback':
         Quiver::rollback();
         break;
     case '-rd':
-        Quiver::rollback();
-        Hexo::deploy();
+        Quiver::rollback() && Hexo::deploy();
         break;
     case '-h':
     case '--help':

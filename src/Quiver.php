@@ -24,14 +24,18 @@ class Quiver{
      * @return bool
      */
     static public function sync() {
+        $HexoService = new HexoService();
         try{
-            (new HexoService)->initPost();
+            $HexoService->initPost();
             (new QuiverService)->sync();
-            LogService::output();
+            $HexoService->backupPost();
         }catch (Exception $e){
             LogService::error('Sync failed: '.$e->getMessage());
-            HexoService::$init && static::rollback();
+            $HexoService->reset();
+            return false;
         }
+
+        LogService::output();
         return true;
     }
 
@@ -40,14 +44,7 @@ class Quiver{
      * @return bool
      */
     static public function rollback(){
-        try{
-            (new HexoService)->rollback();
-            LogService::info("Rollback success~");
-            return true;
-        }catch (Exception $e){
-            LogService::error('Rollback failed: '.$e->getMessage());
-            return false;
-        }
+        return (new HexoService)->rollback();
     }
 }
 

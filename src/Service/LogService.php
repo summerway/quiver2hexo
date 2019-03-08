@@ -11,8 +11,8 @@ namespace Quiver2Hexo\Service;
 class LogService {
     static protected $queue = [];
 
-    static function insert($message){
-        array_push(self::$queue,$message);
+    static function getQueue(){
+        return self::$queue;
     }
 
     static function error($message){
@@ -23,6 +23,10 @@ class LogService {
         dump($message);
     }
 
+    static function insert($message){
+        env('SHOW_LOG',true) && array_push(self::$queue,$message);
+    }
+
     static function output(){
         if(env('SHOW_LOG',true)){
             if(self::$queue){
@@ -30,10 +34,11 @@ class LogService {
                     dump(array_pop(self::$queue));
                 }
             }else{
-                dump("nothing changed~");
+                //dump("nothing changed~");
             }
-
         }
+
+        self::info("sync success");
     }
 
 }

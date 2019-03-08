@@ -40,10 +40,11 @@ class QuiverService {
         $this->walkLibrary($this->libraryPath);
 
         // log
-        $diff = FileService::diffDir(HexoService::getPostBakPath(),HexoService::getPostPath());
+        $diff = FileService::diffDir(HexoService::getPostStashPath(),HexoService::getPostPath());
         foreach($diff as $file){
             LogService::insert("remove {$file}");
         }
+
         return true;
     }
 
@@ -103,9 +104,9 @@ class QuiverService {
         }
 
         list($filename,$content,$updatedAt,$categories) = $markdown;
-        $bakFile = HexoService::getPostBakPath($filename);
-        $name = HexoService::getPostPath($filename);
+        $bakFile = HexoService::getPostStashPath($filename);
         if(file_exists($bakFile)){
+            $name = HexoService::getPostPath($filename);
             $lastUpdatedAt = filemtime($bakFile);
             if($updatedAt > $lastUpdatedAt){
                 FileService::createFile($name,$content);
@@ -115,6 +116,7 @@ class QuiverService {
                 BashService::cp($bakFile,$name);
             }
         }else{
+            $name = FileService::checkUnique(HexoService::getPostPath($filename));
             FileService::createFile($name,$content);
             $message = "migrate ".implode("|",$categories)."|".$filename;
             LogService::insert($message);
