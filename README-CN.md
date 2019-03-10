@@ -21,8 +21,9 @@
 - 支持回滚最近一次的发布操作
 
 Ps
-- **Inbox** 和 **Trash** 笔记不会被同步
-- 笔记的资源文件不会被同步，推荐将资源放至云端 [Markdown快速插入图片工具](https://github.com/summerway/markdown-image-alfred)
+- **Inbox** 和 **Trash** 笔记不会被同步。
+- 迁移的笔记`cell`目前只支持`markdown`。
+- 笔记的资源文件不会被同步，推荐将资源放至云端 [Markdown快速插入图片工具](https://github.com/summerway/markdown-image-alfred)。
 
 # 依赖
 - [Quiver](http://happenapps.com/#quiver):mac上很棒的笔记应用

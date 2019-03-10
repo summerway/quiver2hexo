@@ -18,11 +18,12 @@ Start the **Hexo** local server after synchronization finishes, you can view syn
 Deploy website after synchronization finishes.
 
 ## Rollback
-- rollback the last sync operation
-- rollback the last deploy operation
+- rollback the last sync operation.
+- rollback the last deploy operation.
 
 Ps
-- **Inbox** and **Trash** will not be migrated
+- **Inbox** and **Trash** will not be migrated.
+- The cell of the migration notes need to be `markdown`.
 - Notes resource files will not be migrated.Recommend to have resources on the cloud.
 
 # Dependency
