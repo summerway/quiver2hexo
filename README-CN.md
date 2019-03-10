@@ -1,5 +1,6 @@
 # 概述
 **Quiver**笔记  => `quiver2hexo`同步 => **Hexo** posts => 网站发布  
+如果你有[Alfred](https://www.alfredapp.com/),可以使用[AlfredQuiver2HexoWorkflow](https://github.com/summerway/AlfredQuiver2HexoWorkflow#overview),来完成本脚本的功能。  
 [演示demo](http://markdown.zengtuo.net/quiver2hexo-demo.mp4)
 
 ## 同步
@@ -51,7 +52,7 @@ cd quiver2hexo && sh setup.sh
 安装成功后，会生成`.env`环境配置文件，你可用它来手动更改配置。
 
 ## 基本用法
-| Command      | Description  |
+| 命令      | 描述  |
 | :------:  | :-----:  |
 | `php sync.php`  | 将QUIVER中笔记同步至HEXO |
 | `php sync.php -s` | 同步完成后启动HEXO本地服务 <br/> 若服务存在则重启服务 |
@@ -60,12 +61,6 @@ cd quiver2hexo && sh setup.sh
 | `php sync.php -rd` | 回滚最近一次的发布操作 |
 | `php sync.php -h` | 帮助文档 |
 | `php sync.php -hc` | 中文帮助文档 |
-
-
-# todo
-- [ ] support `code`,`text` cell
-- [ ] alfred workflow
-
 
 # 其他
 **Quiver**修改标签和分类是不会更新`updated_at`的，所以读取更新时间得获取`meta.json`的最后修改时间

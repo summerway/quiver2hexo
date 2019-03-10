@@ -1,5 +1,6 @@
 # Overview
 **Quiver** notes  => `quiver2hexo` sync => **Hexo** posts => Deploy blog website  
+If you have [Alfred](https://www.alfredapp.com/), you can use [AlfredQuiver2HexoWorkflow](https://github.com/summerway/AlfredQuiver2HexoWorkflow#overview) to complete the function of this script.  
 [demo video](http://markdown.zengtuo.net/quiver2hexo-demo.mp4)
 
 
@@ -62,6 +63,3 @@ Once the setup finishes, an `.env` config file is generated.You can change confi
 | `php sync.php -h` | help document|
 
 
-# todo
-- [ ] support `code`,`text` cell
-- [ ] alfred workflow

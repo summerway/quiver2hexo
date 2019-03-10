@@ -21,13 +21,6 @@ class BashService{
         return shell_exec("rm -rf {$path}");
     }
 
-    static function cp($origin,$destination){
-        $origin = FileService::format($origin);
-        $destination = FileService::format($destination);
-
-        return shell_exec("cp -R {$origin} {$destination}");
-    }
-
     static function mkdir($path){
         return shell_exec("mkdir -p $path");
     }

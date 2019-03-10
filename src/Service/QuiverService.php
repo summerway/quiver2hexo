@@ -113,7 +113,7 @@ class QuiverService {
                 $message = "modify ".implode("|",$categories)."|".$filename;
                 LogService::insert($message);
             }else{
-                BashService::cp($bakFile,$name);
+                copy($bakFile,$name);
             }
         }else{
             $name = FileService::checkUnique(HexoService::getPostPath($filename));

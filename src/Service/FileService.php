@@ -51,7 +51,4 @@ class FileService {
         return array_diff($lgc->getDirFiles($obj),$lgc->getDirFiles($sbj));
     }
 
-    static function format($name){
-        return str_replace(' ','\ ',$name);
-    }
 }
